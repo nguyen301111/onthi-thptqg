@@ -1,0 +1,95 @@
+﻿<!DOCTYPE html>
+<html><head>
+  <meta charset="utf-8">
+  <title>Verification Test</title>
+</head>
+<body>
+  <div id="test-output"><pre>Casio 5x6 test: PASS
+Casio sin(30) test: PASS
+Toan questions: 22 (P1: 12, P2: 4, P3: 6) - PASS
+Ly questions: 28 (P1: 18, P2: 4, P3: 6) - PASS
+Hoa questions: 28 (P1: 18, P2: 4, P3: 6) - PASS
+Toan theory check: PASS
+Ly theory check: PASS
+Hoa theory check: PASS
+Grading test: Score P1=0.25, P2=1, P3=0.5 - PASS
+Results theory preserved: PASS</pre></div>
+
+  <!-- Load all project scripts -->
+  <script src="js/data/documents.js"></script>
+  <script src="js/data/templates.js"></script>
+  <script src="js/data/roadmap.js"></script>
+  <script src="js/generator.js"></script>
+  <script src="js/casio570.js"></script>
+
+  <script>
+    const logs = [];
+
+    // Test 1: Casio570 existence and basic calculation
+    try {
+      if (window.Casio570) {
+        Casio570.ac();
+        Casio570.input('5');
+        Casio570.input(' × ', '*');
+        Casio570.input('6');
+        Casio570.calculate();
+        const res = Casio570.result;
+        logs.push("Casio 5x6 test: " + (res === "30" ? "PASS" : "FAIL (" + res + ")"));
+
+        // Trig test (sin 30 deg)
+        Casio570.ac();
+        Casio570.angleMode = 'DEG';
+        Casio570.inputFunc('sin');
+        Casio570.input('3');
+        Casio570.input('0');
+        Casio570.input(')');
+        Casio570.calculate();
+        const sinRes = Casio570.result;
+        logs.push("Casio sin(30) test: " + (sinRes === "0.5" ? "PASS" : "FAIL (" + sinRes + ")"));
+      } else {
+        logs.push("Casio570 not defined: FAIL");
+      }
+    } catch(e) {
+      logs.push("Casio test error: " + e.message);
+    }
+
+    // Test 2: ExamGenerator counts for 2025/2026 specs
+    try {
+      const examToan = ExamGenerator.generateExam('toan');
+      const examLy = ExamGenerator.generateExam('ly');
+      const examHoa = ExamGenerator.generateExam('hoa');
+
+      logs.push("Toan questions: " + examToan.totalQuestions + " (P1: " + examToan.part1.length + ", P2: " + examToan.part2.length + ", P3: " + examToan.part3.length + ") - " + (examToan.totalQuestions === 22 ? "PASS" : "FAIL"));
+      logs.push("Ly questions: " + examLy.totalQuestions + " (P1: " + examLy.part1.length + ", P2: " + examLy.part2.length + ", P3: " + examLy.part3.length + ") - " + (examLy.totalQuestions === 28 ? "PASS" : "FAIL"));
+      logs.push("Hoa questions: " + examHoa.totalQuestions + " (P1: " + examHoa.part1.length + ", P2: " + examHoa.part2.length + ", P3: " + examHoa.part3.length + ") - " + (examHoa.totalQuestions === 28 ? "PASS" : "FAIL"));
+
+      // Test 3: Check theory, explanation, and tips presence
+      const hasTheoryP1 = examToan.part1.every(q => q.theory && q.explanation);
+      const hasTheoryP2 = examToan.part2.every(q => q.theory);
+      const hasTheoryP3 = examToan.part3.every(q => q.theory && q.explanation);
+      logs.push("Toan theory check: " + (hasTheoryP1 && hasTheoryP2 && hasTheoryP3 ? "PASS" : "FAIL"));
+
+      const hasTheoryLy = examLy.part1.every(q => q.theory && q.explanation) && examLy.part2.every(q => q.theory) && examLy.part3.every(q => q.theory && q.explanation);
+      logs.push("Ly theory check: " + (hasTheoryLy ? "PASS" : "FAIL"));
+
+      const hasTheoryHoa = examHoa.part1.every(q => q.theory && q.explanation) && examHoa.part2.every(q => q.theory) && examHoa.part3.every(q => q.theory && q.explanation);
+      logs.push("Hoa theory check: " + (hasTheoryHoa ? "PASS" : "FAIL"));
+
+      // Test 4: Grading with theory preservation
+      const mockAnswers = {
+        part1: { 1: examToan.part1[0].correctOption },
+        part2: { 1: { a: examToan.part2[0].statements[0].isCorrect, b: examToan.part2[0].statements[1].isCorrect, c: examToan.part2[0].statements[2].isCorrect, d: examToan.part2[0].statements[3].isCorrect } },
+        part3: { 1: examToan.part3[0].correctAnswer }
+      };
+      const gradeRes = ExamGenerator.gradeExam(examToan, mockAnswers);
+      logs.push("Grading test: Score P1=" + gradeRes.scorePart1 + ", P2=" + gradeRes.scorePart2 + ", P3=" + gradeRes.scorePart3 + " - " + (gradeRes.scorePart1 > 0 && gradeRes.scorePart2 === 1.0 && gradeRes.scorePart3 > 0 ? "PASS" : "FAIL"));
+      logs.push("Results theory preserved: " + (gradeRes.part1[0].theory ? "PASS" : "FAIL"));
+    } catch(e) {
+      logs.push("ExamGenerator test error: " + e.message);
+    }
+
+    document.getElementById('test-output').innerHTML = '<pre>' + logs.join('\n') + '</pre>';
+  </script>
+
+
+</body></html>

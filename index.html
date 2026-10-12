@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>THPTQG Master 2025 - Kho Tài Liệu & Luyện Thi Chuẩn BGD</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- KaTeX for Math & Science formulas -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="css/style.css">
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#eff6ff',
+              100: '#dbeafe',
+              500: '#3b82f6',
+              600: '#2563eb',
+              700: '#1d4ed8',
+              800: '#1e40af'
+            }
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-slate-50 text-slate-900 min-h-screen flex flex-col antialiased">
+
+  <!-- Top Announcement Bar -->
+  <div class="bg-gradient-to-r from-blue-700 via-indigo-700 to-purple-700 text-white text-xs sm:text-sm py-2 px-4 text-center font-medium shadow-sm no-print">
+    ✨ Cấu trúc đề thi mới nhất theo định dạng <strong>Bộ Giáo Dục & Đào Tạo từ năm 2025</strong> (Chương trình GDPT 2018) • Hỗ trợ tự động đổi số liệu đề thi!
+  </div>
+
+  <!-- Main Navigation Header -->
+  <header class="bg-white border-b border-slate-200 sticky top-0 z-40 no-print">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        <!-- Logo -->
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-blue-600 text-white flex items-center justify-center font-bold text-xl shadow-md shadow-blue-500/20">
+            25
+          </div>
+          <div>
+            <div class="font-extrabold text-lg tracking-tight bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
+              THPTQG Master
+            </div>
+            <div class="text-[11px] text-slate-500 font-medium">Toán - Lí - Hóa • Form Chuẩn BGD 2025</div>
+          </div>
+        </div>
+
+        <!-- Navigation Tabs -->
+        <nav class="hidden md:flex items-center gap-1">
+          <button id="nav-btn-docs" onclick="switchTab('docs')" class="tab-btn px-4 py-2 rounded-lg text-sm font-semibold transition text-blue-600 bg-blue-50">
+            📚 Kho Tài Liệu
+          </button>
+          <button id="nav-btn-generator" onclick="switchTab('generator')" class="tab-btn px-4 py-2 rounded-lg text-sm font-semibold transition text-slate-600 hover:text-blue-600 hover:bg-slate-50">
+            🎲 Sinh Đề Đổi Số
+          </button>
+          <button id="nav-btn-exam" onclick="switchTab('exam')" class="tab-btn px-4 py-2 rounded-lg text-sm font-semibold transition text-slate-600 hover:text-blue-600 hover:bg-slate-50">
+            ⏱️ Phòng Thi Thử
+          </button>
+          <button id="nav-btn-roadmap" onclick="switchTab('roadmap')" class="tab-btn px-4 py-2 rounded-lg text-sm font-semibold transition text-slate-600 hover:text-blue-600 hover:bg-slate-50 flex items-center gap-1.5">
+            <span class="inline-block w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+            🗺️ Lộ Trình 2k9 (2027)
+          </button>
+          <button id="nav-btn-history" onclick="switchTab('history')" class="tab-btn px-4 py-2 rounded-lg text-sm font-semibold transition text-slate-600 hover:text-blue-600 hover:bg-slate-50">
+            📊 Lịch Sử
+          </button>
+          <button id="nav-btn-review" onclick="switchTab('review')" class="tab-btn hidden px-4 py-2 rounded-lg text-sm font-semibold transition text-slate-600 hover:text-blue-600 hover:bg-slate-50 flex items-center gap-1.5">
+            <span class="inline-block w-2 h-2 rounded-full bg-amber-500"></span>
+            👁️ Xem Lại Đề
+          </button>
+        </nav>
+
+        <!-- Action CTA -->
+        <div class="flex items-center gap-3">
+          <button onclick="startQuickExam('toan')" class="hidden sm:inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl text-sm font-semibold shadow-sm transition active:scale-95">
+            <i data-lucide="play" class="w-4 h-4"></i> Thi Thử Ngay
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content Container -->
+  <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+    <!-- ========================================== -->
+    <!-- TAB 1: KHO TÀI LIỆU (DOCUMENTS REPOSITORY) -->
+    <!-- ========================================== -->
+    <section id="tab-docs" class="tab-content space-y-6">
+      <!-- Search & Filters Banner -->
+      <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div>
+            <h1 class="text-2xl font-bold text-slate-900">Kho Tài Liệu Ôn Thi THPT Quốc Gia</h1>
+            <p class="text-slate-500 text-sm mt-1">Tổng hợp 280+ tài liệu, đề thi thử và chuyên đề ôn tập Toán - Lí - Hóa Lớp 10, 11, 12 bám sát SGK mới GDPT 2018 cùng các khóa học uy tín.</p>
+          </div>
+          <button onclick="openAddDocModal()" class="inline-flex items-center gap-2 bg-slate-100 hover:bg-slate-200 text-slate-800 px-4 py-2 rounded-xl text-sm font-semibold transition">
+            <i data-lucide="plus" class="w-4 h-4"></i> Thêm Tài Liệu Mới
+          </button>
+        </div>
+
+        <!-- Filter Controls -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 pt-2">
+          <!-- Search box -->
+          <div class="relative">
+            <i data-lucide="search" class="w-4 h-4 absolute left-3 top-3 text-slate-400"></i>
+            <input type="text" id="doc-search-input" oninput="renderDocuments()" placeholder="Tìm tên đề, chuyên đề..." class="w-full pl-9 pr-4 py-2 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+          </div>
+
+          <!-- Filter Subject -->
+          <select id="doc-filter-subject" onchange="renderDocuments()" class="px-3 py-2 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <option value="all">Tất cả môn (Toán, Lí, Hóa)</option>
+            <option value="toan">Môn Toán Học</option>
+            <option value="ly">Môn Vật Lí</option>
+            <option value="hoa">Môn Hóa Học</option>
+          </select>
+
+          <!-- Filter Grade (Lớp) -->
+          <select id="doc-filter-grade" onchange="renderDocuments()" class="px-3 py-2 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <option value="all">Tất cả các lớp (10, 11, 12)</option>
+            <option value="10">Lớp 10 (Nền tảng GDPT mới)</option>
+            <option value="11">Lớp 11 (Kiến thức trọng tâm)</option>
+            <option value="12">Lớp 12 (Ôn thi tốt nghiệp)</option>
+          </select>
+
+          <!-- Filter Category -->
+          <select id="doc-filter-category" onchange="renderDocuments()" class="px-3 py-2 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <option value="all">Tất cả thể loại & khóa học</option>
+            <option value="chuyen-de-10-11">📘 Ôn Tập Lớp 10 & 11 (Toán - Lí - Hóa)</option>
+            <option value="1000-cau-ly">⚛️ 1000 Câu Lý Thuyết Vật Lí (Chuẩn BGD)</option>
+            <option value="1000-cau-toan">🔢 Khóa 1000 Câu Đúng Sai Toán (Đỗ Văn Đức)</option>
+            <option value="ve-dich-ly">🎯 Khóa 14 Ngày Tổng Ôn Vật Lí (Mapstudy)</option>
+            <option value="imo-hoa">🧪 Khóa Live M Hóa Học 2025 (Phạm Thắng)</option>
+            <option value="ve-dich-hoa">⚡ Khóa 14 Ngày Về Đích Hóa Học (59 Đề & Lời Giải)</option>
+            <option value="de-thi">Bộ Đề Thi Thử & Minh Họa</option>
+            <option value="chuyen-de">Chuyên Đề Lý Thuyết & Bài Tập</option>
+          </select>
+
+          <!-- Filter Year -->
+          <select id="doc-filter-year" onchange="renderDocuments()" class="px-3 py-2 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <option value="all" selected>Tất cả năm phát hành</option>
+            <option value="2025">Năm 2025 (Format mới BGD)</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Document Cards Grid -->
+      <div id="docs-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Injected via JavaScript -->
+      </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- TAB 2: SINH ĐỀ TỰ ĐỘNG (GENERATOR HUB)     -->
+    <!-- ========================================== -->
+    <section id="tab-generator" class="tab-content hidden space-y-6">
+      <div class="bg-gradient-to-br from-blue-600 via-indigo-600 to-purple-700 rounded-3xl p-8 text-white shadow-xl">
+        <div class="max-w-2xl space-y-4">
+          <span class="inline-block px-3 py-1 bg-white/20 backdrop-blur rounded-full text-xs font-semibold uppercase tracking-wider">
+            Công nghệ Parametric AI Randomizer
+          </span>
+          <h2 class="text-3xl font-extrabold tracking-tight">Sinh Đề Thi Mới Bằng Cách Đổi Số Liệu</h2>
+          <p class="text-blue-100 text-sm leading-relaxed">
+            Hệ thống tự động lấy mẫu từ các đề thi gốc chuẩn của Bộ Giáo Dục & Đào Tạo từ năm 2025, giữ nguyên phương pháp và bản chất tư duy nhưng thay đổi các thông số số học ngẫu nhiên. Giúp bạn luyện đề không bao giờ bị trùng lặp!
+          </p>
+        </div>
+      </div>
+
+      <!-- Subject Selection Cards -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <!-- Toán -->
+        <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm hover:border-blue-500 transition space-y-4 flex flex-col justify-between">
+          <div class="space-y-3">
+            <div class="w-12 h-12 rounded-xl bg-blue-100 text-blue-600 flex items-center justify-center font-bold text-xl">
+              ∑
+            </div>
+            <h3 class="text-xl font-bold text-slate-900">Môn Toán Học</h3>
+            <p class="text-slate-500 text-sm">Cấu trúc 2025: 12 câu trắc nghiệm 4 lựa chọn, 4 câu Đúng/Sai (16 ý), 6 câu trả lời ngắn.</p>
+            <div class="flex items-center gap-4 text-xs font-medium text-slate-600 pt-2">
+              <span class="flex items-center gap-1"><i data-lucide="clock" class="w-3.5 h-3.5"></i> 90 Phút</span>
+              <span class="flex items-center gap-1"><i data-lucide="file-text" class="w-3.5 h-3.5"></i> 22 Câu hỏi</span>
+              <span class="flex items-center gap-1"><i data-lucide="award" class="w-3.5 h-3.5"></i> Thang điểm 10</span>
+            </div>
+          </div>
+          <button onclick="startGeneratedExam('toan')" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 rounded-xl transition flex items-center justify-center gap-2 shadow-sm">
+            <i data-lucide="shuffle" class="w-4 h-4"></i> Sinh Đề Mới & Thi Ngay
+          </button>
+        </div>
+
+        <!-- Vật Lí -->
+        <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm hover:border-indigo-500 transition space-y-4 flex flex-col justify-between">
+          <div class="space-y-3">
+            <div class="w-12 h-12 rounded-xl bg-indigo-100 text-indigo-600 flex items-center justify-center font-bold text-xl">
+              ⚡
+            </div>
+            <h3 class="text-xl font-bold text-slate-900">Môn Vật Lí</h3>
+            <p class="text-slate-500 text-sm">Cấu trúc 2025: Vật lí nhiệt, Khí lý tưởng, Từ trường, Hạt nhân (18 câu P1, 4 câu P2, 6 câu P3).</p>
+            <div class="flex items-center gap-4 text-xs font-medium text-slate-600 pt-2">
+              <span class="flex items-center gap-1"><i data-lucide="clock" class="w-3.5 h-3.5"></i> 50 Phút</span>
+              <span class="flex items-center gap-1"><i data-lucide="file-text" class="w-3.5 h-3.5"></i> 28 Câu hỏi</span>
+              <span class="flex items-center gap-1"><i data-lucide="award" class="w-3.5 h-3.5"></i> Thang điểm 10</span>
+            </div>
+          </div>
+          <button onclick="startGeneratedExam('ly')" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2.5 rounded-xl transition flex items-center justify-center gap-2 shadow-sm">
+            <i data-lucide="shuffle" class="w-4 h-4"></i> Sinh Đề Mới & Thi Ngay
+          </button>
+        </div>
+
+        <!-- Hóa Học -->
+        <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm hover:border-emerald-500 transition space-y-4 flex flex-col justify-between">
+          <div class="space-y-3">
+            <div class="w-12 h-12 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center font-bold text-xl">
+              🧪
+            </div>
+            <h3 class="text-xl font-bold text-slate-900">Môn Hóa Học</h3>
+            <p class="text-slate-500 text-sm">Cấu trúc 2025: Ester - Lipid, Carbohydrate, Kim loại chuyển tiếp & Phức chất (18 câu P1, 4 câu P2, 6 câu P3).</p>
+            <div class="flex items-center gap-4 text-xs font-medium text-slate-600 pt-2">
+              <span class="flex items-center gap-1"><i data-lucide="clock" class="w-3.5 h-3.5"></i> 50 Phút</span>
+              <span class="flex items-center gap-1"><i data-lucide="file-text" class="w-3.5 h-3.5"></i> 28 Câu hỏi</span>
+              <span class="flex items-center gap-1"><i data-lucide="award" class="w-3.5 h-3.5"></i> Thang điểm 10</span>
+            </div>
+          </div>
+          <button onclick="startGeneratedExam('hoa')" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-2.5 rounded-xl transition flex items-center justify-center gap-2 shadow-sm">
+            <i data-lucide="shuffle" class="w-4 h-4"></i> Sinh Đề Mới & Thi Ngay
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- TAB 3: PHÒNG THI THỬ (EXAM ROOM INTERFACE) -->
+    <!-- ========================================== -->
+    <section id="tab-exam" class="tab-content hidden space-y-6">
+      
+      <!-- Exam Active Header Bar -->
+      <div class="bg-white rounded-2xl p-4 sm:p-6 border border-slate-200 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4 sticky top-20 z-30">
+        <div class="flex items-center gap-4">
+          <span id="exam-subject-badge" class="px-3 py-1.5 rounded-xl bg-blue-100 text-blue-700 text-xs font-bold uppercase tracking-wider">
+            Toán Học
+          </span>
+          <div>
+            <h2 id="exam-title-text" class="text-lg font-bold text-slate-900">Đề Thi Thử Tốt Nghiệp THPT 2025</h2>
+            <p class="text-xs text-slate-500">Form Bộ GD&ĐT • Đã áp dụng bộ số liệu đổi tự động</p>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-3">
+          <!-- Countdown Timer -->
+          <div class="flex items-center gap-2 bg-slate-900 text-white px-4 py-2 rounded-xl font-mono text-base font-bold shadow-sm">
+            <i data-lucide="timer" class="w-4 h-4 text-amber-400"></i>
+            <span id="exam-timer">90:00</span>
+          </div>
+
+          <button onclick="window.Casio570.toggle()" class="inline-flex items-center gap-1.5 bg-amber-400 hover:bg-amber-500 text-slate-900 px-3.5 py-2 rounded-xl text-sm font-bold shadow-sm transition active:scale-95" title="Mở máy tính Casio fx-570 (Phím tắt: Alt+C)">
+            <i data-lucide="calculator" class="w-4 h-4"></i> Casio fx-570
+          </button>
+
+          <button onclick="window.print()" class="hidden sm:inline-flex items-center gap-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 px-3.5 py-2 rounded-xl text-sm font-semibold transition">
+            <i data-lucide="printer" class="w-4 h-4"></i> In Đề
+          </button>
+
+          <button onclick="submitExamPrompt()" class="inline-flex items-center gap-1.5 bg-emerald-600 hover:bg-emerald-700 text-white px-5 py-2 rounded-xl text-sm font-bold shadow-sm transition active:scale-95">
+            <i data-lucide="check-circle" class="w-4 h-4"></i> Nộp Bài
+          </button>
+        </div>
+      </div>
+
+      <!-- Exam Layout: Left Questions / Right Navigation Matrix -->
+      <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+        
+        <!-- Left: Questions Area (3 Columns wide) -->
+        <div class="lg:col-span-3 space-y-6" id="exam-questions-container">
+          <!-- Injected via JavaScript -->
+        </div>
+
+        <!-- Right: Fixed Navigation Matrix (1 Column wide) -->
+        <div class="lg:col-span-1 no-print">
+          <div class="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm sticky top-48 space-y-4">
+            <h3 class="font-bold text-sm text-slate-900 flex items-center justify-between">
+              <span>Bảng Câu Hỏi</span>
+              <span id="answered-counter" class="text-xs font-semibold text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full">0/22 đã làm</span>
+            </h3>
+
+            <!-- Section 1 Navigation -->
+            <div class="space-y-1.5">
+              <div class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Phần I: 4 Lựa chọn</div>
+              <div id="nav-matrix-p1" class="grid grid-cols-6 gap-1.5"></div>
+            </div>
+
+            <!-- Section 2 Navigation -->
+            <div class="space-y-1.5 pt-2 border-t border-slate-100">
+              <div class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Phần II: Đúng / Sai</div>
+              <div id="nav-matrix-p2" class="grid grid-cols-4 gap-1.5"></div>
+            </div>
+
+            <!-- Section 3 Navigation -->
+            <div class="space-y-1.5 pt-2 border-t border-slate-100">
+              <div class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Phần III: Trả lời ngắn</div>
+              <div id="nav-matrix-p3" class="grid grid-cols-6 gap-1.5"></div>
+            </div>
+
+            <div class="pt-4 border-t border-slate-100">
+              <button onclick="submitExamPrompt()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2.5 rounded-xl text-sm transition shadow-sm flex items-center justify-center gap-2">
+                <i data-lucide="send" class="w-4 h-4"></i> Nộp Bài Ngay
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- TAB 4: LỊCH SỬ LÀM BÀI & THỐNG KÊ          -->
+    <!-- ========================================== -->
+    <section id="tab-history" class="tab-content hidden space-y-6">
+      <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <div class="flex items-center gap-2">
+            <h2 class="text-xl font-bold text-slate-900">Lịch Sử Làm Bài & Ôn Luyện</h2>
+            <span class="text-xs bg-blue-50 text-blue-700 font-bold px-2.5 py-0.5 rounded-full border border-blue-200">Lưu trữ chi tiết</span>
+          </div>
+          <p class="text-sm text-slate-500 mt-1">Xem lại đề đã làm, đối chiếu đáp án, đọc lại cơ sở lý thuyết và bấm <strong>Thi lại</strong> bất kỳ đề thi nào để sửa sai.</p>
+        </div>
+        <div class="flex items-center gap-2">
+          <button onclick="clearHistory()" class="text-xs text-rose-600 hover:text-rose-700 font-semibold px-3 py-2 rounded-xl border border-rose-200 hover:bg-rose-50 transition flex items-center gap-1.5">
+            <i data-lucide="trash-2" class="w-3.5 h-3.5"></i> Xóa lịch sử
+          </button>
+        </div>
+      </div>
+
+      <div id="history-table-container" class="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm">
+        <!-- Injected via JavaScript -->
+      </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- TAB 6: PHÒNG XEM LẠI ĐỀ THI TOÀN MÀN HÌNH  -->
+    <!-- ========================================== -->
+    <section id="tab-review" class="tab-content hidden space-y-6">
+      
+      <!-- Review Active Header Bar (Giống hệt lúc thi nhưng bổ sung thống kê điểm) -->
+      <div class="bg-white rounded-2xl p-4 sm:p-6 border border-slate-200 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4 sticky top-20 z-30">
+        <div class="flex items-center gap-4">
+          <span id="review-subject-badge" class="px-3 py-1.5 rounded-xl bg-blue-100 text-blue-700 text-xs font-bold uppercase tracking-wider">
+            Toán Học
+          </span>
+          <div>
+            <div class="flex items-center gap-2">
+              <h2 id="review-title-text" class="text-lg font-bold text-slate-900">Xem Lại Bài Thi Đã Làm</h2>
+              <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-amber-100 text-amber-800 border border-amber-200">
+                Toàn Màn Hình
+              </span>
+            </div>
+            <p id="review-meta-text" class="text-xs text-slate-500 mt-0.5">Thời gian nộp bài: -- • Form Chuẩn Bộ Giáo Dục 2025</p>
+          </div>
+        </div>
+
+        <div class="flex flex-wrap items-center gap-2.5 sm:gap-3">
+          <!-- Total Score Badge -->
+          <div class="bg-slate-900 text-white px-4 py-2 rounded-xl flex items-center gap-2.5 shadow-sm">
+            <span class="text-xs text-slate-300 font-medium">Tổng điểm:</span>
+            <span id="review-header-score" class="font-mono text-lg font-black text-amber-400">-- / 10</span>
+          </div>
+
+          <button onclick="window.Casio570.toggle()" class="inline-flex items-center gap-1.5 bg-amber-400 hover:bg-amber-500 text-slate-900 px-3.5 py-2 rounded-xl text-xs font-bold shadow-sm transition active:scale-95" title="Mở máy tính Casio fx-570">
+            <i data-lucide="calculator" class="w-4 h-4"></i> Casio fx-570
+          </button>
+
+          <button onclick="window.print()" class="hidden sm:inline-flex items-center gap-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-2 rounded-xl text-xs font-semibold transition" title="In đề và đáp án">
+            <i data-lucide="printer" class="w-4 h-4"></i> In Đề
+          </button>
+
+          <button id="review-retake-btn" onclick="retakeCurrentReviewingExam()" class="inline-flex items-center gap-1.5 bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-xl text-xs font-bold shadow-sm transition active:scale-95" title="Thi lại đề này với cùng bộ số liệu">
+            <i data-lucide="rotate-ccw" class="w-4 h-4"></i> Thi Lại Đề Này
+          </button>
+
+          <button onclick="switchTab('history')" class="inline-flex items-center gap-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 px-3.5 py-2 rounded-xl text-xs font-bold transition" title="Quay lại danh sách lịch sử">
+            <i data-lucide="arrow-left" class="w-4 h-4"></i> Về Lịch Sử
+          </button>
+        </div>
+      </div>
+
+      <!-- Review Layout: Left Questions / Right Navigation Matrix -->
+      <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+        
+        <!-- Left: Questions Area (3 Columns wide) -->
+        <div class="lg:col-span-3 space-y-6" id="review-questions-container">
+          <!-- Injected via JavaScript -->
+        </div>
+
+        <!-- Right: Fixed Navigation Matrix (1 Column wide, giống hệt lúc thi) -->
+        <div class="lg:col-span-1 no-print">
+          <div class="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm sticky top-48 space-y-4">
+            <div class="border-b border-slate-100 pb-3">
+              <div class="flex items-center justify-between">
+                <h3 class="font-bold text-sm text-slate-900 flex items-center gap-1.5">
+                  <i data-lucide="layout-grid" class="w-4 h-4 text-blue-600"></i> Ma Trận Câu Hỏi
+                </h3>
+                <span id="review-matrix-score-badge" class="text-xs font-bold font-mono text-emerald-700 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-200">
+                  -- đ
+                </span>
+              </div>
+              <!-- Color Legend -->
+              <div class="flex items-center gap-2.5 pt-2 text-[11px] text-slate-500 font-medium">
+                <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-emerald-500 shrink-0"></span> Đúng</span>
+                <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-amber-500 shrink-0"></span> 1 phần</span>
+                <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-rose-500 shrink-0"></span> Sai</span>
+              </div>
+            </div>
+
+            <!-- Section 1 Navigation -->
+            <div class="space-y-1.5">
+              <div class="flex items-center justify-between text-[11px] font-bold text-slate-400 uppercase tracking-wider">
+                <span>Phần I: 4 Lựa chọn</span>
+                <span id="review-nav-p1-counter" class="text-slate-500 font-mono">--/12</span>
+              </div>
+              <div id="review-nav-matrix-p1" class="grid grid-cols-6 gap-1.5"></div>
+            </div>
+
+            <!-- Section 2 Navigation -->
+            <div class="space-y-1.5 pt-2 border-t border-slate-100">
+              <div class="flex items-center justify-between text-[11px] font-bold text-slate-400 uppercase tracking-wider">
+                <span>Phần II: Đúng / Sai</span>
+                <span id="review-nav-p2-counter" class="text-slate-500 font-mono">--/4</span>
+              </div>
+              <div id="review-nav-matrix-p2" class="grid grid-cols-4 gap-1.5"></div>
+            </div>
+
+            <!-- Section 3 Navigation -->
+            <div class="space-y-1.5 pt-2 border-t border-slate-100">
+              <div class="flex items-center justify-between text-[11px] font-bold text-slate-400 uppercase tracking-wider">
+                <span>Phần III: Trả lời ngắn</span>
+                <span id="review-nav-p3-counter" class="text-slate-500 font-mono">--/6</span>
+              </div>
+              <div id="review-nav-matrix-p3" class="grid grid-cols-6 gap-1.5"></div>
+            </div>
+
+            <div class="pt-4 border-t border-slate-100 space-y-2">
+              <button onclick="retakeCurrentReviewingExam()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2.5 rounded-xl text-xs transition shadow-sm flex items-center justify-center gap-1.5 active:scale-95">
+                <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i> Thi Lại Đề Này (Cùng số)
+              </button>
+              <button onclick="switchTab('history')" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-2 rounded-xl text-xs transition flex items-center justify-center gap-1.5">
+                <i data-lucide="arrow-left" class="w-3.5 h-3.5"></i> Quay Về Lịch Sử
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- TAB 5: LỘ TRÌNH ÔN THI 2K9 (THPTQG 2027)  -->
+    <!-- ========================================== -->
+    <section id="tab-roadmap" class="tab-content hidden space-y-6">
+      
+      <!-- Roadmap Hero Banner -->
+      <div class="bg-gradient-to-r from-slate-900 via-indigo-950 to-blue-900 rounded-3xl p-6 sm:p-8 text-white shadow-xl space-y-6">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
+          <div class="space-y-2 max-w-2xl">
+            <div class="flex items-center gap-2">
+              <span id="roadmap-hero-badge" class="px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 text-xs font-bold uppercase tracking-wider">
+                Dành Riêng Cho 2k9 • Chương Trình GDPT 2018
+              </span>
+              <span class="text-xs text-slate-300">Khóa Thi Tốt Nghiệp 2027</span>
+            </div>
+            <h2 id="roadmap-hero-title" class="text-2xl sm:text-3xl font-black tracking-tight text-white">
+              Lộ Trình Ôn Thi THPT Quốc Gia 2027 Toàn Diện
+            </h2>
+            <p id="roadmap-hero-desc" class="text-slate-300 text-sm leading-relaxed">
+              Kế hoạch 4 giai đoạn bám sát 100% nội dung Bộ Giáo Dục & Đào Tạo công bố cho lứa học sinh 2009. Quét sạch kiến thức Lớp 12, Lớp 11 và làm chủ định dạng đề thi mới 3 phần!
+            </p>
+          </div>
+
+          <!-- Countdown to June 2027 -->
+          <div class="bg-white/10 backdrop-blur border border-white/15 rounded-2xl p-5 text-center shrink-0 min-w-[200px] space-y-1">
+            <span class="text-[11px] uppercase tracking-wider text-amber-300 font-bold">Kỳ Thi THPTQG Tháng 6/2027</span>
+            <div class="text-3xl sm:text-4xl font-black font-mono text-white" id="countdown-days">~265</div>
+            <div class="text-xs text-slate-300 font-medium">Ngày đếm ngược</div>
+          </div>
+        </div>
+
+        <!-- Overall Progress Bar -->
+        <div class="bg-white/10 backdrop-blur rounded-2xl p-4 border border-white/10 space-y-2">
+          <div class="flex items-center justify-between text-xs font-semibold">
+            <span class="text-slate-200">Tiến Độ Ôn Tập Chuyên Đề Của Bạn:</span>
+            <span class="text-emerald-400 font-mono font-bold" id="roadmap-progress-text">0 / 26 chuyên đề (0%)</span>
+          </div>
+          <div class="w-full bg-slate-800/80 rounded-full h-3 overflow-hidden border border-white/10">
+            <div id="roadmap-progress-bar" class="bg-gradient-to-r from-emerald-500 to-teal-400 h-full rounded-full transition-all duration-500" style="width: 0%"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Track Switcher: Học sinh THPT Chuẩn 2k9 vs Thí sinh tự do ôn lại từ đầu -->
+      <div class="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div class="flex flex-col sm:flex-row sm:items-center gap-3">
+          <span class="text-xs font-bold uppercase tracking-wider text-slate-500 shrink-0">Chế độ lộ trình:</span>
+          <div class="inline-flex p-1 bg-slate-100 rounded-xl border border-slate-200 gap-1">
+            <button id="track-btn-standard" onclick="switchRoadmapTrack('standard')" class="px-4 py-2 rounded-lg text-xs font-bold transition bg-white text-blue-700 shadow-sm flex items-center gap-1.5">
+              <span>🎓</span> Học Sinh THPT Chuẩn 2k9
+            </button>
+            <button id="track-btn-free" onclick="switchRoadmapTrack('free')" class="px-4 py-2 rounded-lg text-xs font-bold transition text-slate-600 hover:text-slate-900 flex items-center gap-1.5">
+              <span>🚀</span> Thí Sinh Tự Do (Ôn Lại Từ Đầu / 0 → 9+)
+            </button>
+          </div>
+        </div>
+        <div id="roadmap-track-badge" class="text-xs font-semibold px-3 py-1.5 rounded-xl bg-blue-50 text-blue-700 border border-blue-200 flex items-center gap-1.5 self-start md:self-center">
+          <i data-lucide="compass" class="w-3.5 h-3.5"></i>
+          <span id="roadmap-track-badge-text">Đang xem: Lộ trình niên khóa chuẩn 2026 - 2027</span>
+        </div>
+      </div>
+
+      <!-- Roadmap Controls: Filter by Phase & Subject -->
+      <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex flex-wrap items-center justify-between gap-4">
+        <div class="flex items-center gap-2 overflow-x-auto pb-1 sm:pb-0" id="roadmap-phase-buttons-container">
+          <button onclick="filterRoadmap('all')" class="roadmap-filter-btn px-4 py-2 rounded-xl text-xs font-bold transition bg-blue-600 text-white" data-phase="all">
+            Tất Cả 4 Giai Đoạn
+          </button>
+          <button onclick="filterRoadmap('phase-1')" class="roadmap-filter-btn px-4 py-2 rounded-xl text-xs font-bold transition bg-slate-100 text-slate-700 hover:bg-slate-200" data-phase="phase-1" id="filter-btn-p1">
+            Giai Đoạn 1 (HK1 2026)
+          </button>
+          <button onclick="filterRoadmap('phase-2')" class="roadmap-filter-btn px-4 py-2 rounded-xl text-xs font-bold transition bg-slate-100 text-slate-700 hover:bg-slate-200" data-phase="phase-2" id="filter-btn-p2">
+            Giai Đoạn 2 (HK2 2027)
+          </button>
+          <button onclick="filterRoadmap('phase-3')" class="roadmap-filter-btn px-4 py-2 rounded-xl text-xs font-bold transition bg-slate-100 text-slate-700 hover:bg-slate-200" data-phase="phase-3" id="filter-btn-p3">
+            Giai Đoạn 3 (Luyện Đề)
+          </button>
+          <button onclick="filterRoadmap('phase-4')" class="roadmap-filter-btn px-4 py-2 rounded-xl text-xs font-bold transition bg-slate-100 text-slate-700 hover:bg-slate-200" data-phase="phase-4" id="filter-btn-p4">
+            Giai Đoạn 4 (Về Đích)
+          </button>
+        </div>
+
+        <div class="flex items-center gap-2">
+          <select id="roadmap-subject-select" onchange="renderRoadmap()" class="px-3 py-1.5 rounded-xl border border-slate-200 text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <option value="all">Tất cả môn (Toán, Lí, Hóa)</option>
+            <option value="Toán Học">Chuyên đề Toán Học</option>
+            <option value="Vật Lí">Chuyên đề Vật Lí</option>
+            <option value="Hóa Học">Chuyên đề Hóa Học</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Roadmap Phases Container -->
+      <div id="roadmap-phases-container" class="space-y-8">
+        <!-- Injected via JavaScript -->
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ========================================== -->
+  <!-- MODAL: KẾT QUẢ & GIẢI CHI TIẾT (RESULTS)   -->
+  <!-- ========================================== -->
+  <div id="results-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4 overflow-y-auto">
+    <div class="bg-white rounded-3xl max-w-4xl w-full my-8 overflow-hidden shadow-2xl flex flex-col max-h-[90vh]">
+      
+      <!-- Modal Header -->
+      <div class="bg-slate-900 text-white p-6 sm:p-8 flex items-center justify-between">
+        <div class="space-y-1">
+          <span class="text-xs font-bold uppercase tracking-wider text-amber-400" id="result-badge-text">Kết quả thi thử THPTQG 2025</span>
+          <h3 class="text-2xl sm:text-3xl font-black" id="result-subject-text">Môn Toán Học</h3>
+        </div>
+        <div class="text-right">
+          <div class="text-4xl sm:text-5xl font-black text-amber-400 font-mono" id="result-total-score">8.50</div>
+          <div class="text-xs text-slate-400 font-medium">Thang điểm 10.00</div>
+        </div>
+      </div>
+
+      <!-- Score Breakdown Cards -->
+      <div class="grid grid-cols-3 divide-x divide-slate-100 bg-slate-50 border-b border-slate-200 text-center py-4">
+        <div>
+          <div class="text-xs font-semibold text-slate-500 uppercase">Phần I (4 Lựa chọn)</div>
+          <div class="text-lg font-bold text-slate-900 font-mono mt-0.5" id="result-p1-score">2.75 / 3.0</div>
+        </div>
+        <div>
+          <div class="text-xs font-semibold text-slate-500 uppercase">Phần II (Đúng/Sai)</div>
+          <div class="text-lg font-bold text-slate-900 font-mono mt-0.5" id="result-p2-score">3.25 / 4.0</div>
+        </div>
+        <div>
+          <div class="text-xs font-semibold text-slate-500 uppercase">Phần III (Trả lời ngắn)</div>
+          <div class="text-lg font-bold text-slate-900 font-mono mt-0.5" id="result-p3-score">2.50 / 3.0</div>
+        </div>
+      </div>
+
+      <!-- Modal Body: Detailed Solutions -->
+      <div class="p-6 sm:p-8 overflow-y-auto space-y-6 flex-1" id="result-solutions-container">
+        <!-- Injected via JavaScript -->
+      </div>
+
+      <!-- Modal Footer -->
+      <div class="p-4 sm:p-6 bg-slate-50 border-t border-slate-200 flex flex-wrap items-center justify-between gap-3">
+        <div class="flex items-center gap-2">
+          <button onclick="closeResultsModal()" class="px-5 py-2.5 rounded-xl border border-slate-300 font-semibold text-sm hover:bg-slate-100 transition">
+            Đóng lại
+          </button>
+          <button onclick="window.Casio570.toggle()" class="px-4 py-2.5 rounded-xl bg-amber-400 hover:bg-amber-500 text-slate-950 font-bold text-xs transition shadow-sm flex items-center gap-1.5">
+            <i data-lucide="calculator" class="w-4 h-4"></i> Mở Casio fx-570
+          </button>
+        </div>
+        <div class="flex items-center gap-2">
+          <button onclick="openReviewFromCurrentModal()" class="px-4 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs transition shadow-sm flex items-center gap-1.5" title="Mở phòng xem lại toàn màn hình với ma trận câu hỏi giống lúc thi">
+            <i data-lucide="maximize-2" class="w-4 h-4"></i> Xem Toàn Màn Hình
+          </button>
+          <button id="modal-retake-current-btn" onclick="retakeCurrentViewingExam()" class="px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs transition shadow-sm flex items-center gap-1.5" title="Làm lại chính xác đề thi này để sửa các lỗi sai">
+            <i data-lucide="rotate-ccw" class="w-4 h-4"></i> Thi Lại Đề Này (Cùng số liệu)
+          </button>
+          <button onclick="startGeneratedExam(window.CurrentlyViewingExam ? window.CurrentlyViewingExam.subject : (window.CurrentExam ? window.CurrentExam.subject : 'toan'))" class="px-4 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs transition shadow-sm flex items-center gap-1.5" title="Tạo đề thi mới bằng cách đổi số liệu">
+            <i data-lucide="shuffle" class="w-4 h-4"></i> Sinh Đề Mới (Đổi số)
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- MODAL: ĐỌC & HỌC TÀI LIỆU TRỰC TIẾP       -->
+  <!-- ========================================== -->
+  <div id="doc-study-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4 overflow-y-auto">
+    <div class="bg-white rounded-3xl max-w-4xl w-full my-8 overflow-hidden shadow-2xl flex flex-col max-h-[90vh]">
+      
+      <!-- Doc Header -->
+      <div class="bg-gradient-to-r from-blue-700 via-indigo-700 to-purple-800 text-white p-6 sm:p-8 flex items-start justify-between gap-4">
+        <div class="space-y-2">
+          <div class="flex items-center gap-2">
+            <span id="doc-modal-badge" class="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-white/20 backdrop-blur">
+              Toán Học
+            </span>
+            <span id="doc-modal-year" class="text-xs text-blue-200 font-medium">Năm 2025</span>
+          </div>
+          <h3 class="text-xl sm:text-2xl font-black text-white" id="doc-modal-title">
+            Tên tài liệu ôn tập
+          </h3>
+          <p class="text-xs sm:text-sm text-blue-100 max-w-2xl" id="doc-modal-desc">
+            Mô tả chi tiết tài liệu
+          </p>
+        </div>
+        <button onclick="closeDocStudyModal()" class="p-2 rounded-xl bg-white/10 hover:bg-white/20 text-white transition shrink-0">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <!-- Doc Body -->
+      <div class="p-6 sm:p-8 overflow-y-auto space-y-8 flex-1" id="doc-modal-content">
+        <!-- Injected via JavaScript -->
+      </div>
+
+      <!-- Doc Footer -->
+      <div class="p-4 sm:p-6 bg-slate-50 border-t border-slate-200 flex flex-wrap items-center justify-between gap-3">
+        <div class="flex items-center gap-3">
+          <a id="doc-modal-source-link" href="#" target="_blank" class="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl border border-slate-300 font-semibold text-xs text-slate-700 hover:bg-slate-100 transition">
+            <i data-lucide="external-link" class="w-3.5 h-3.5"></i> Mở Nguồn Ban Đầu
+          </a>
+          <button onclick="copyDocLink()" class="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl border border-slate-300 font-semibold text-xs text-slate-700 hover:bg-slate-100 transition">
+            <i data-lucide="share-2" class="w-3.5 h-3.5"></i> Sao Chép Link
+          </button>
+        </div>
+        <button id="doc-modal-generate-btn" class="px-6 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm transition shadow-sm flex items-center gap-2">
+          <i data-lucide="shuffle" class="w-4 h-4"></i> Sinh Đề Thi Thử Từ Chuyên Đề Này
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- FLOATING BUTTON: MÁY TÍNH CASIO FX-570    -->
+  <!-- ========================================== -->
+  <button id="casio-floating-btn" onclick="window.Casio570.toggle()" class="fixed bottom-6 right-6 z-40 bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 text-white px-4 py-3 rounded-2xl shadow-2xl border border-slate-700/80 flex items-center gap-2.5 font-bold text-sm hover:scale-105 active:scale-95 transition group" title="Mở máy tính khoa học Casio fx-570 (Phím tắt: Alt+C)">
+    <div class="w-6 h-6 rounded-lg bg-amber-400 text-slate-900 flex items-center justify-center font-black text-xs shadow-sm">
+      fx
+    </div>
+    <span>Máy Tính Casio 570</span>
+    <span class="text-[10px] bg-slate-700 text-amber-300 px-1.5 py-0.5 rounded font-mono hidden sm:inline">Alt+C</span>
+  </button>
+
+  <!-- ========================================== -->
+  <!-- WIDGET: MÁY TÍNH KHOA HỌC CASIO FX-570VN   -->
+  <!-- ========================================== -->
+  <div id="casio-widget" class="fixed top-20 right-6 z-50 hidden w-[350px] sm:w-[370px] bg-gradient-to-b from-slate-800 via-slate-800 to-slate-900 text-slate-100 rounded-3xl shadow-2xl border-2 border-slate-700/90 overflow-hidden flex flex-col font-sans">
+    
+    <!-- Casio Top Bar / Header (Draggable) -->
+    <div id="casio-header" class="bg-slate-900/90 px-4 py-2.5 border-b border-slate-700/80 flex items-center justify-between cursor-grab select-none">
+      <div class="flex items-center gap-2">
+        <span class="text-xs font-black tracking-widest text-slate-100">CASIO</span>
+        <span class="text-[11px] font-bold italic text-amber-400">fx-570VN PLUS</span>
+        <span class="text-[9px] text-slate-400 hidden sm:inline font-mono">NATURAL-V.P.A.M.</span>
+      </div>
+      <div class="flex items-center gap-1.5">
+        <button onclick="window.Casio570.toggleAngleMode()" id="casio-angle-btn" class="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-slate-800 text-amber-300 border border-slate-700 hover:bg-slate-700 transition" title="Đổi đơn vị góc (Độ / Radian)">
+          DEG
+        </button>
+        <button onclick="window.Casio570.toggleMinimize()" class="w-6 h-6 rounded-lg bg-slate-800 hover:bg-slate-700 flex items-center justify-center text-slate-400 hover:text-white transition" title="Thu nhỏ/Mở rộng">
+          <i data-lucide="minus" class="w-3.5 h-3.5"></i>
+        </button>
+        <button onclick="window.Casio570.toggle()" class="w-6 h-6 rounded-lg bg-slate-800 hover:bg-rose-600 flex items-center justify-center text-slate-400 hover:text-white transition" title="Đóng máy tính">
+          <i data-lucide="x" class="w-3.5 h-3.5"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Casio Body -->
+    <div id="casio-body" class="p-3.5 space-y-3">
+      <!-- Mode Tabs: Máy tính / Giải Phương Trình (EQN) -->
+      <div class="flex items-center justify-between bg-slate-900/70 p-1 rounded-xl border border-slate-700/60 text-xs">
+        <button id="casio-tab-calc" onclick="window.Casio570.setTab('calc')" class="px-3 py-1 text-xs font-bold rounded-lg bg-amber-400 text-slate-900 transition flex items-center gap-1">
+          <i data-lucide="calculator" class="w-3.5 h-3.5"></i> Bàn phím Casio
+        </button>
+        <button id="casio-tab-eqn" onclick="window.Casio570.setTab('eqn')" class="px-3 py-1 text-xs font-bold rounded-lg text-slate-400 hover:text-white transition flex items-center gap-1">
+          <i data-lucide="binary" class="w-3.5 h-3.5"></i> Giải PT & Hệ PT (EQN)
+        </button>
+      </div>
+
+      <!-- LCD Screen -->
+      <div class="casio-lcd-screen p-3 rounded-2xl border-2 border-slate-600 space-y-1">
+        <!-- Status Indicators -->
+        <div class="flex items-center justify-between text-[10px] font-mono border-b border-black/10 pb-1">
+          <div class="flex items-center gap-2">
+            <span id="casio-ind-shift" class="text-slate-600">S</span>
+            <span id="casio-ind-alpha" class="text-slate-600">A</span>
+            <span id="casio-ind-m" class="text-slate-600">M</span>
+          </div>
+          <div class="flex items-center gap-2 font-bold">
+            <span id="casio-ind-angle" class="text-emerald-800">DEG</span>
+            <span class="text-slate-600">MATH</span>
+          </div>
+        </div>
+
+        <!-- Expression Display Line -->
+        <div id="casio-expr-display" class="font-mono text-sm tracking-wide text-slate-900 min-h-[22px] overflow-x-auto whitespace-nowrap scrollbar-none font-bold">
+          
+        </div>
+
+        <!-- Result Display Line -->
+        <div id="casio-res-display" class="font-mono text-2xl font-black text-slate-950 text-right tracking-tight min-h-[32px] overflow-hidden truncate">
+          0
+        </div>
+      </div>
+
+      <!-- KEYPAD: Bàn phím máy tính khoa học -->
+      <div id="casio-calc-keypad" class="space-y-2">
+        <!-- D-Pad and Control Keys Row -->
+        <div class="grid grid-cols-5 gap-1.5 text-xs font-bold">
+          <button onclick="window.Casio570.toggleShift()" class="casio-btn p-2 rounded-xl bg-slate-700 text-amber-300 border-t border-amber-400/40">
+            SHIFT
+          </button>
+          <button onclick="window.Casio570.toggleAlpha()" class="casio-btn p-2 rounded-xl bg-slate-700 text-rose-400 border-t border-rose-400/40">
+            ALPHA
+          </button>
+          <button onclick="window.Casio570.toggleAngleMode()" class="casio-btn p-2 rounded-xl bg-slate-700 text-slate-200">
+            MODE
+          </button>
+          <button onclick="window.Casio570.toggleFraction()" class="casio-btn p-2 rounded-xl bg-slate-700 text-sky-300 font-mono" title="Chuyển đổi phân số / số thập phân">
+            S⇔D
+          </button>
+          <button onclick="window.Casio570.ac()" class="casio-btn p-2 rounded-xl casio-action-ac font-black">
+            ON/AC
+          </button>
+        </div>
+
+        <!-- Scientific Function Keys Row 1 -->
+        <div class="grid grid-cols-6 gap-1.5 text-xs font-semibold">
+          <button onclick="window.Casio570.inputFunc('√', 'sqrt')" class="casio-btn casio-func-btn py-1.5 rounded-lg font-mono">
+            √
+          </button>
+          <button onclick="window.Casio570.input('²')" class="casio-btn casio-func-btn py-1.5 rounded-lg font-mono">
+            x²
+          </button>
+          <button onclick="window.Casio570.input('^')" class="casio-btn casio-func-btn py-1.5 rounded-lg font-mono">
+            xʸ
+          </button>
+          <button onclick="window.Casio570.inputFunc('log')" class="casio-btn casio-func-btn py-1.5 rounded-lg">
+            log
+          </button>
+          <button onclick="window.Casio570.inputFunc('ln')" class="casio-btn casio-func-btn py-1.5 rounded-lg">
+            ln
+          </button>
+          <button onclick="window.Casio570.input('π')" class="casio-btn casio-func-btn py-1.5 rounded-lg font-mono text-amber-300">
+            π
+          </button>
+        </div>
+
+        <!-- Scientific Function Keys Row 2 (Trigonometry) -->
+        <div class="grid grid-cols-6 gap-1.5 text-xs font-semibold">
+          <button onclick="window.Casio570.inputFunc('sin')" class="casio-btn casio-func-btn py-1.5 rounded-lg">
+            sin
+          </button>
+          <button onclick="window.Casio570.inputFunc('cos')" class="casio-btn casio-func-btn py-1.5 rounded-lg">
+            cos
+          </button>
+          <button onclick="window.Casio570.inputFunc('tan')" class="casio-btn casio-func-btn py-1.5 rounded-lg">
+            tan
+          </button>
+          <button onclick="window.Casio570.input('(')" class="casio-btn casio-func-btn py-1.5 rounded-lg font-bold">
+            (
+          </button>
+          <button onclick="window.Casio570.input(')')" class="casio-btn casio-func-btn py-1.5 rounded-lg font-bold">
+            )
+          </button>
+          <button onclick="window.Casio570.input('!')" class="casio-btn casio-func-btn py-1.5 rounded-lg font-mono">
+            x!
+          </button>
+        </div>
+
+        <!-- Number & Basic Operator Keypad -->
+        <div class="grid grid-cols-5 gap-1.5 pt-1 text-sm font-bold">
+          <!-- Row 1 -->
+          <button onclick="window.Casio570.input('7')" class="casio-btn casio-num-btn py-2 rounded-xl">7</button>
+          <button onclick="window.Casio570.input('8')" class="casio-btn casio-num-btn py-2 rounded-xl">8</button>
+          <button onclick="window.Casio570.input('9')" class="casio-btn casio-num-btn py-2 rounded-xl">9</button>
+          <button onclick="window.Casio570.del()" class="casio-btn casio-action-del py-2 rounded-xl font-bold">DEL</button>
+          <button onclick="window.Casio570.ac()" class="casio-btn casio-action-ac py-2 rounded-xl font-bold">AC</button>
+
+          <!-- Row 2 -->
+          <button onclick="window.Casio570.input('4')" class="casio-btn casio-num-btn py-2 rounded-xl">4</button>
+          <button onclick="window.Casio570.input('5')" class="casio-btn casio-num-btn py-2 rounded-xl">5</button>
+          <button onclick="window.Casio570.input('6')" class="casio-btn casio-num-btn py-2 rounded-xl">6</button>
+          <button onclick="window.Casio570.input(' × ', '*')" class="casio-btn casio-func-btn py-2 rounded-xl text-base">×</button>
+          <button onclick="window.Casio570.input(' ÷ ', '/')" class="casio-btn casio-func-btn py-2 rounded-xl text-base">÷</button>
+
+          <!-- Row 3 -->
+          <button onclick="window.Casio570.input('1')" class="casio-btn casio-num-btn py-2 rounded-xl">1</button>
+          <button onclick="window.Casio570.input('2')" class="casio-btn casio-num-btn py-2 rounded-xl">2</button>
+          <button onclick="window.Casio570.input('3')" class="casio-btn casio-num-btn py-2 rounded-xl">3</button>
+          <button onclick="window.Casio570.input(' + ', '+')" class="casio-btn casio-func-btn py-2 rounded-xl text-base">+</button>
+          <button onclick="window.Casio570.input(' - ', '-')" class="casio-btn casio-func-btn py-2 rounded-xl text-base">-</button>
+
+          <!-- Row 4 -->
+          <button onclick="window.Casio570.input('0')" class="casio-btn casio-num-btn py-2 rounded-xl">0</button>
+          <button onclick="window.Casio570.input('.')" class="casio-btn casio-num-btn py-2 rounded-xl">.</button>
+          <button onclick="window.Casio570.input(' × 10^', '*10^')" class="casio-btn casio-func-btn py-2 rounded-xl text-xs font-mono">×10ˣ</button>
+          <button onclick="window.Casio570.input('Ans')" class="casio-btn casio-func-btn py-2 rounded-xl text-xs text-amber-300">Ans</button>
+          <button onclick="window.Casio570.calculate()" class="casio-btn py-2 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-black text-lg shadow-md">=</button>
+        </div>
+      </div>
+
+      <!-- EQN PANEL: Giải Phương Trình Bậc 2 & Hệ Phương Trình -->
+      <div id="casio-eqn-panel" class="hidden space-y-3 text-xs">
+        <!-- EQN 1: Bậc 2 -->
+        <div class="bg-slate-900/80 p-3 rounded-2xl border border-slate-700/60 space-y-2">
+          <div class="font-bold text-amber-400 flex items-center gap-1.5">
+            <span class="w-1.5 h-1.5 rounded-full bg-amber-400"></span>
+            1. Phương Trình Bậc 2: ax² + bx + c = 0
+          </div>
+          <div class="grid grid-cols-3 gap-2">
+            <div>
+              <label class="text-[10px] text-slate-400 block font-mono">Hệ số a:</label>
+              <input type="number" id="casio-eqn-a" placeholder="1" class="casio-input w-full px-2 py-1.5 rounded-lg bg-slate-800 border border-slate-600 text-white font-mono text-xs focus:ring-1 focus:ring-amber-400">
+            </div>
+            <div>
+              <label class="text-[10px] text-slate-400 block font-mono">Hệ số b:</label>
+              <input type="number" id="casio-eqn-b" placeholder="-3" class="casio-input w-full px-2 py-1.5 rounded-lg bg-slate-800 border border-slate-600 text-white font-mono text-xs focus:ring-1 focus:ring-amber-400">
+            </div>
+            <div>
+              <label class="text-[10px] text-slate-400 block font-mono">Hệ số c:</label>
+              <input type="number" id="casio-eqn-c" placeholder="2" class="casio-input w-full px-2 py-1.5 rounded-lg bg-slate-800 border border-slate-600 text-white font-mono text-xs focus:ring-1 focus:ring-amber-400">
+            </div>
+          </div>
+          <button onclick="window.Casio570.solveQuadratic()" class="w-full py-1.5 rounded-xl bg-amber-400 text-slate-950 font-bold hover:bg-amber-300 transition">
+            Giải Phương Trình Bậc 2
+          </button>
+          <div id="casio-eqn-result" class="p-2 rounded-xl bg-slate-950/60 border border-slate-800 min-h-[30px]"></div>
+        </div>
+
+        <!-- EQN 2: Hệ 2 PT bậc nhất 2 ẩn -->
+        <div class="bg-slate-900/80 p-3 rounded-2xl border border-slate-700/60 space-y-2">
+          <div class="font-bold text-sky-400 flex items-center gap-1.5">
+            <span class="w-1.5 h-1.5 rounded-full bg-sky-400"></span>
+            2. Hệ 2 PT Bậc Nhất 2 Ẩn:
+          </div>
+          <div class="text-[10px] text-slate-400 font-mono">a₁x + b₁y = c₁ &nbsp;|&nbsp; a₂x + b₂y = c₂</div>
+          <div class="grid grid-cols-3 gap-1.5">
+            <input type="number" id="casio-sys-a1" placeholder="a₁" class="casio-input px-2 py-1 rounded bg-slate-800 border border-slate-600 text-white font-mono text-xs">
+            <input type="number" id="casio-sys-b1" placeholder="b₁" class="casio-input px-2 py-1 rounded bg-slate-800 border border-slate-600 text-white font-mono text-xs">
+            <input type="number" id="casio-sys-c1" placeholder="c₁" class="casio-input px-2 py-1 rounded bg-slate-800 border border-slate-600 text-white font-mono text-xs">
+          </div>
+          <div class="grid grid-cols-3 gap-1.5">
+            <input type="number" id="casio-sys-a2" placeholder="a₂" class="casio-input px-2 py-1 rounded bg-slate-800 border border-slate-600 text-white font-mono text-xs">
+            <input type="number" id="casio-sys-b2" placeholder="b₂" class="casio-input px-2 py-1 rounded bg-slate-800 border border-slate-600 text-white font-mono text-xs">
+            <input type="number" id="casio-sys-c2" placeholder="c₂" class="casio-input px-2 py-1 rounded bg-slate-800 border border-slate-600 text-white font-mono text-xs">
+          </div>
+          <button onclick="window.Casio570.solveLinearSystem2()" class="w-full py-1.5 rounded-xl bg-sky-500 text-white font-bold hover:bg-sky-400 transition">
+            Giải Hệ Phương Trình
+          </button>
+          <div id="casio-sys-result" class="p-2 rounded-xl bg-slate-950/60 border border-slate-800 min-h-[30px]"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Load Data and Application Scripts -->
+  <script src="js/data/documents.js"></script>
+  <script src="js/data/templates.js"></script>
+  <script src="js/data/roadmap.js"></script>
+  <script src="js/generator.js"></script>
+  <script src="js/casio570.js"></script>
+  <script src="js/app.js"></script>
+  <script>
+    // Initialize Lucide icons on load
+    document.addEventListener("DOMContentLoaded", () => {
+      lucide.createIcons();
+    });
+  </script>
+</body>
+</html>

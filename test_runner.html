@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Unit & Integration Test Suite - THPTQG Master</title>
+</head>
+<body>
+  <div id="test-output" style="font-family: monospace; white-space: pre;">Running tests...</div>
+
+  <!-- Minimal required DOM elements for app.js -->
+  <div id="tab-docs" class="tab-content"></div>
+  <div id="tab-generator" class="tab-content hidden"></div>
+  <div id="tab-exam" class="tab-content hidden"></div>
+  <div id="tab-roadmap" class="tab-content hidden"></div>
+  <div id="tab-history" class="tab-content hidden"></div>
+  <div id="tab-review" class="tab-content hidden"></div>
+  <button id="nav-btn-review" class="hidden"></button>
+
+  <span id="review-subject-badge"></span>
+  <h2 id="review-title-text"></h2>
+  <p id="review-meta-text"></p>
+  <span id="review-header-score"></span>
+  <span id="review-matrix-score-badge"></span>
+  <span id="review-nav-p1-counter"></span>
+  <span id="review-nav-p2-counter"></span>
+  <span id="review-nav-p3-counter"></span>
+  <div id="review-questions-container"></div>
+  <div id="review-nav-matrix-p1"></div>
+  <div id="review-nav-matrix-p2"></div>
+  <div id="review-nav-matrix-p3"></div>
+
+  <span id="exam-subject-badge"></span>
+  <h2 id="exam-title-text"></h2>
+  <span id="exam-timer"></span>
+  <span id="answered-counter"></span>
+  <div id="exam-questions-container"></div>
+  <div id="nav-matrix-p1"></div>
+  <div id="nav-matrix-p2"></div>
+  <div id="nav-matrix-p3"></div>
+
+  <div id="history-table-container"></div>
+
+  <span id="roadmap-hero-badge"></span>
+  <h2 id="roadmap-hero-title"></h2>
+  <p id="roadmap-hero-desc"></p>
+  <span id="countdown-days"></span>
+  <span id="roadmap-progress-text"></span>
+  <div id="roadmap-progress-bar" style="width: 0%"></div>
+  <button id="track-btn-standard"></button>
+  <button id="track-btn-free"></button>
+  <span id="roadmap-track-badge-text"></span>
+  <button id="filter-btn-p1" class="roadmap-filter-btn" data-phase="phase-1"></button>
+  <button id="filter-btn-p2" class="roadmap-filter-btn" data-phase="phase-2"></button>
+  <button id="filter-btn-p3" class="roadmap-filter-btn" data-phase="phase-3"></button>
+  <button id="filter-btn-p4" class="roadmap-filter-btn" data-phase="phase-4"></button>
+  <select id="roadmap-subject-select"><option value="all">all</option></select>
+  <div id="roadmap-phases-container"></div>
+
+  <div id="results-modal" class="hidden">
+    <span id="result-badge-text"></span>
+    <h3 id="result-subject-text"></h3>
+    <span id="result-total-score"></span>
+    <span id="result-p1-score"></span>
+    <span id="result-p2-score"></span>
+    <span id="result-p3-score"></span>
+    <div id="result-solutions-container"></div>
+    <button id="modal-retake-current-btn"></button>
+  </div>
+
+  <div id="doc-study-modal" class="hidden"></div>
+  <div id="docs-grid"></div>
+
+  <!-- Scripts -->
+  <script src="js/data/documents.js"></script>
+  <script src="js/data/study_content.js"></script>
+  <script src="js/data/templates.js"></script>
+  <script src="js/data/roadmap.js"></script>
+  <script src="js/generator.js"></script>
+  <script src="js/casio570.js"></script>
+  <script src="js/app.js"></script>
+
+  <script>
+    const logs = [];
+    function assert(condition, message) {
+      if (condition) {
+        logs.push("[PASS] " + message);
+      } else {
+        logs.push("[FAIL] " + message);
+        console.error("[FAIL] " + message);
+      }
+    }
+
+    try {
+      // TEST 1: ROADMAP DATA FOR FREE CANDIDATES
+      assert(Array.isArray(window.ROADMAP_FREE_CANDIDATE_2K9), "ROADMAP_FREE_CANDIDATE_2K9 is an array");
+      assert(window.ROADMAP_FREE_CANDIDATE_2K9.length === 4, "ROADMAP_FREE_CANDIDATE_2K9 has 4 phases");
+      
+      const p1 = window.ROADMAP_FREE_CANDIDATE_2K9[0];
+      assert(p1.phaseName.includes("Xóa Mất Gốc"), "Phase 1 title is for erasing lost foundation: " + p1.phaseName);
+      assert(p1.subjects.length >= 3, "Phase 1 has at least 3 subjects (Toán, Lí, Hóa)");
+      
+      const p3 = window.ROADMAP_FREE_CANDIDATE_2K9[2];
+      assert(p3.phaseName.includes("Casio fx-570"), "Phase 3 title includes Casio fx-570: " + p3.phaseName);
+
+      // TEST 2: TRACK SWITCHING
+      switchRoadmapTrack('free');
+      assert(window.CurrentRoadmapTrack === 'free', "CurrentRoadmapTrack is 'free'");
+      const activeRoadmapFree = getActiveRoadmap();
+      assert(activeRoadmapFree === window.ROADMAP_FREE_CANDIDATE_2K9, "getActiveRoadmap() returns free candidate roadmap");
+
+      const badgeText = document.getElementById('roadmap-track-badge-text')?.textContent;
+      assert(badgeText && badgeText.includes("Thí Sinh Tự Do"), "Badge text updated for Free candidate track");
+
+      // Switch back
+      switchRoadmapTrack('standard');
+      assert(window.CurrentRoadmapTrack === 'standard', "CurrentRoadmapTrack switched back to 'standard'");
+      assert(getActiveRoadmap() === window.ROADMAP_2K9, "getActiveRoadmap() returns standard roadmap");
+
+      // TEST 3: EXAM GENERATION, GRADE & SAVE TO HISTORY
+      const exam = window.ExamGenerator.generateExam('toan');
+      assert(exam && exam.part1.length === 12 && exam.part2.length === 4 && exam.part3.length === 6, "Math exam has 12 P1, 4 P2, 6 P3 questions");
+
+      const userAnswers = {
+        part1: { 1: 'A', 2: 'B' },
+        part2: { 13: { a: true, b: false, c: true, d: false } },
+        part3: { 17: '12' }
+      };
+
+      const results = window.ExamGenerator.gradeExam(exam, userAnswers);
+      assert(results && typeof results.totalScore === 'number', "Exam grading calculated totalScore: " + results.totalScore);
+
+      // Save to history
+      saveToHistory(results, exam, userAnswers);
+      const history = JSON.parse(localStorage.getItem('thptqg_exam_history') || '[]');
+      assert(history.length > 0, "History saved to localStorage");
+      
+      const latestItem = history[0];
+      assert(latestItem.id === results.examId, "Latest history item has correct examId");
+      assert(latestItem.examData && latestItem.examData.id === exam.id, "Latest history item contains full examData");
+      assert(latestItem.resultsData && latestItem.resultsData.examId === exam.id, "Latest history item contains full resultsData");
+      assert(latestItem.userAnswers && latestItem.userAnswers.part1[1] === 'A', "Latest history item contains userAnswers");
+
+      // TEST 4: RENDER HISTORY TABLE
+      renderHistory();
+      const historyHtml = document.getElementById('history-table-container').innerHTML;
+      assert(historyHtml.includes("Xem lại"), "History table contains 'Xem lại' action button");
+      assert(historyHtml.includes("Thi lại"), "History table contains 'Thi lại' action button");
+      assert(historyHtml.includes("viewHistoryExam"), "History table calls viewHistoryExam");
+      assert(historyHtml.includes("retakeHistoryExam"), "History table calls retakeHistoryExam");
+
+      // TEST 5: VIEW HISTORY EXAM (FULL-SCREEN REVIEW ROOM)
+      viewHistoryExam(latestItem.id);
+      assert(window.CurrentTab === 'review', "viewHistoryExam switched to tab 'review'");
+      assert(!document.getElementById('tab-review').classList.contains('hidden'), "tab-review is visible");
+      assert(window.CurrentReviewExam && window.CurrentReviewExam.id === exam.id, "window.CurrentReviewExam is set to the exam");
+      
+      const revContainer = document.getElementById('review-questions-container');
+      assert(revContainer.innerHTML.includes("PHẦN I. CÂU TRẮC NGHIỆM NHIỀU PHƯƠNG ÁN LỰA CHỌN"), "Review room rendered Part 1 section");
+      assert(revContainer.innerHTML.includes("PHẦN II. CÂU TRẮC NGHIỆM ĐÚNG SAI"), "Review room rendered Part 2 section");
+      assert(revContainer.innerHTML.includes("PHẦN III. CÂU TRẮC NGHIỆM TRẢ LỜI NGẮN"), "Review room rendered Part 3 section");
+      assert(revContainer.innerHTML.includes("Cơ Sở Lý Thuyết &amp; Công Thức Trọng Tâm") || revContainer.innerHTML.includes("Cơ Sở Lý Thuyết"), "Review room contains theory");
+      assert(revContainer.innerHTML.includes("Mẹo Bấm Máy Casio fx-570"), "Review room contains Casio 570 tips");
+
+      const p1Matrix = document.getElementById('review-nav-matrix-p1');
+      assert(p1Matrix.children.length === 12, "Review navigation matrix has 12 Part 1 pills");
+      const p2Matrix = document.getElementById('review-nav-matrix-p2');
+      assert(p2Matrix.children.length === 4, "Review navigation matrix has 4 Part 2 pills");
+      const p3Matrix = document.getElementById('review-nav-matrix-p3');
+      assert(p3Matrix.children.length === 6, "Review navigation matrix has 6 Part 3 pills");
+
+      // TEST 6: RETAKE EXAM OBJECT FROM REVIEW ROOM
+      retakeExamObject(latestItem.examData);
+      assert(window.CurrentExam && window.CurrentExam.id.includes('-retake'), "Retake exam created with retake id: " + window.CurrentExam.id);
+      assert(window.CurrentExam.part1.length === 12, "Retake exam retains all 12 part 1 questions");
+      assert(window.CurrentExam.part1[0].content === exam.part1[0].content, "Retake exam retains identical question 1 content and numbers");
+      assert(Object.keys(window.UserAnswers.part1).length === 0, "User answers reset for retake");
+      assert(document.getElementById('exam-title-text').textContent.includes("[THI LẠI]"), "Exam title reflects [THI LẠI]");
+
+      // TEST 7: TOGGLE CHECKLIST IN ROADMAP
+      toggleChecklistItem('free_m1_1');
+      const checkedAfter = JSON.parse(localStorage.getItem('thptqg_roadmap_checked') || '[]');
+      assert(checkedAfter.includes('free_m1_1'), "toggleChecklistItem saved item to localStorage");
+
+      logs.push("=== ALL TESTS COMPLETED SUCCESSFULLY ===");
+    } catch (e) {
+      logs.push("[ERROR] " + e.message + "\n" + e.stack);
+    }
+
+    document.getElementById('test-output').textContent = logs.join('\n');
+    console.log(logs.join('\n'));
+  </script>
+</body>
+</html>
