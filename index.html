@@ -766,7 +766,7 @@ body {
   <!-- MODAL: ĐỌC & HỌC TÀI LIỆU TRỰC TIẾP       -->
   <!-- ========================================== -->
   <div id="doc-study-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4 overflow-y-auto">
-    <div class="bg-white rounded-3xl max-w-4xl w-full my-8 overflow-hidden shadow-2xl flex flex-col max-h-[90vh]">
+    <div id="doc-study-modal-container" class="bg-white rounded-3xl max-w-4xl w-full my-8 overflow-hidden shadow-2xl flex flex-col max-h-[90vh] transition-all duration-200">
       
       <!-- Doc Header -->
       <div class="bg-gradient-to-r from-blue-700 via-indigo-700 to-purple-800 text-white p-6 sm:p-8 flex items-start justify-between gap-4">
@@ -784,9 +784,15 @@ body {
             Mô tả chi tiết tài liệu
           </p>
         </div>
-        <button onclick="closeDocStudyModal()" class="p-2 rounded-xl bg-white/10 hover:bg-white/20 text-white transition shrink-0">
-          <i data-lucide="x" class="w-5 h-5"></i>
-        </button>
+        <div class="flex items-center gap-2 shrink-0">
+          <button id="doc-modal-fullscreen-btn" onclick="toggleDocStudyFullscreen()" class="p-2 sm:px-3 sm:py-2 rounded-xl bg-white/10 hover:bg-white/20 text-white transition flex items-center gap-1.5 text-xs font-bold border border-white/20" title="Bật/Tắt Toàn Màn Hình (Phím F)">
+            <i data-lucide="maximize-2" id="doc-modal-fullscreen-icon" class="w-5 h-5"></i>
+            <span class="hidden sm:inline" id="doc-modal-fullscreen-text">Toàn Màn Hình</span>
+          </button>
+          <button onclick="closeDocStudyModal()" class="p-2 rounded-xl bg-white/10 hover:bg-white/20 text-white transition border border-white/20" title="Đóng (Esc)">
+            <i data-lucide="x" class="w-5 h-5"></i>
+          </button>
+        </div>
       </div>
 
       <!-- Doc Body -->
@@ -796,7 +802,11 @@ body {
 
       <!-- Doc Footer -->
       <div class="p-4 sm:p-6 bg-slate-50 border-t border-slate-200 flex flex-wrap items-center justify-between gap-3">
-        <div class="flex items-center gap-3">
+        <div class="flex items-center gap-2 flex-wrap">
+          <button id="doc-modal-fullscreen-footer-btn" onclick="toggleDocStudyFullscreen()" class="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl border border-blue-200 bg-blue-50 text-blue-700 font-bold text-xs hover:bg-blue-100 transition shadow-sm">
+            <i data-lucide="maximize-2" id="doc-modal-fullscreen-footer-icon" class="w-4 h-4"></i>
+            <span id="doc-modal-fullscreen-footer-text">Xem Toàn Màn Hình</span>
+          </button>
           <a id="doc-modal-source-link" href="#" target="_blank" class="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl border border-slate-300 font-semibold text-xs text-slate-700 hover:bg-slate-100 transition">
             <i data-lucide="external-link" class="w-3.5 h-3.5"></i> Mở Nguồn Ban Đầu
           </a>
@@ -15073,7 +15083,7 @@ function openDocStudyModal(docId) {
                   ` : ''}
                 </div>
               </div>
-              <div class="w-full bg-slate-900 rounded-2xl overflow-hidden shadow-md border border-slate-300 relative" style="height: 520px;">
+              <div id="modal-doc-preview-wrapper" class="w-full bg-slate-900 rounded-2xl overflow-hidden shadow-md border border-slate-300 relative transition-all" style="height: ${window.isDocModalFullscreen ? 'calc(100vh - 280px)' : '520px'};">
                 <iframe id="modal-doc-preview-frame" src="${defaultPreview}" class="w-full h-full border-0" allow="autoplay"></iframe>
               </div>
               <div class="text-[11px] text-slate-500 flex items-center justify-between">
@@ -15228,6 +15238,7 @@ function openDocStudyModal(docId) {
   }
 
   modal.classList.remove('hidden');
+  updateDocStudyFullscreenUI();
   if (window.lucide) lucide.createIcons();
   setTimeout(() => {
     triggerMathRender(modal);
@@ -15240,6 +15251,80 @@ function closeDocStudyModal() {
   if (modal) modal.classList.add('hidden');
 }
 window.closeDocStudyModal = closeDocStudyModal;
+
+// Fullscreen mode logic for Study Modal
+let isDocModalFullscreen = localStorage.getItem('thptqg_doc_modal_fullscreen') === 'true';
+window.isDocModalFullscreen = isDocModalFullscreen;
+
+function updateDocStudyFullscreenUI() {
+  const modal = document.getElementById('doc-study-modal');
+  const container = document.getElementById('doc-study-modal-container');
+  const icon = document.getElementById('doc-modal-fullscreen-icon');
+  const text = document.getElementById('doc-modal-fullscreen-text');
+  const footerIcon = document.getElementById('doc-modal-fullscreen-footer-icon');
+  const footerText = document.getElementById('doc-modal-fullscreen-footer-text');
+  const previewWrapper = document.getElementById('modal-doc-preview-wrapper');
+
+  if (!modal || !container) return;
+
+  if (window.isDocModalFullscreen) {
+    modal.classList.remove('p-4', 'items-center', 'justify-center');
+    modal.classList.add('p-0', 'items-stretch', 'justify-start');
+
+    container.classList.remove('max-w-4xl', 'my-8', 'rounded-3xl', 'max-h-[90vh]');
+    container.classList.add('max-w-none', 'w-full', 'my-0', 'rounded-none', 'h-screen', 'max-h-screen', 'border-none');
+
+    if (icon) icon.setAttribute('data-lucide', 'minimize-2');
+    if (text) text.textContent = 'Thu Nhỏ';
+    if (footerIcon) footerIcon.setAttribute('data-lucide', 'minimize-2');
+    if (footerText) footerText.textContent = 'Thu Nhỏ Lại';
+
+    if (previewWrapper) {
+      previewWrapper.style.height = 'calc(100vh - 280px)';
+    }
+  } else {
+    modal.classList.add('p-4', 'items-center', 'justify-center');
+    modal.classList.remove('p-0', 'items-stretch', 'justify-start');
+
+    container.classList.add('max-w-4xl', 'my-8', 'rounded-3xl', 'max-h-[90vh]');
+    container.classList.remove('max-w-none', 'my-0', 'rounded-none', 'h-screen', 'max-h-screen', 'border-none');
+
+    if (icon) icon.setAttribute('data-lucide', 'maximize-2');
+    if (text) text.textContent = 'Toàn Màn Hình';
+    if (footerIcon) footerIcon.setAttribute('data-lucide', 'maximize-2');
+    if (footerText) footerText.textContent = 'Xem Toàn Màn Hình';
+
+    if (previewWrapper) {
+      previewWrapper.style.height = '520px';
+    }
+  }
+
+  if (window.lucide) lucide.createIcons();
+}
+window.updateDocStudyFullscreenUI = updateDocStudyFullscreenUI;
+
+function toggleDocStudyFullscreen() {
+  window.isDocModalFullscreen = !window.isDocModalFullscreen;
+  localStorage.setItem('thptqg_doc_modal_fullscreen', window.isDocModalFullscreen ? 'true' : 'false');
+  updateDocStudyFullscreenUI();
+}
+window.toggleDocStudyFullscreen = toggleDocStudyFullscreen;
+
+// Keyboard shortcuts for doc study modal
+document.addEventListener('keydown', (e) => {
+  const studyModal = document.getElementById('doc-study-modal');
+  if (studyModal && !studyModal.classList.contains('hidden')) {
+    if (e.key === 'Escape') {
+      if (window.isDocModalFullscreen) {
+        toggleDocStudyFullscreen();
+      } else {
+        closeDocStudyModal();
+      }
+    } else if ((e.key === 'f' || e.key === 'F') && !e.ctrlKey && !e.metaKey && e.target.tagName !== 'INPUT' && e.target.tagName !== 'TEXTAREA') {
+      toggleDocStudyFullscreen();
+    }
+  }
+});
 
 function copyDocLink() {
   const sourceLink = document.getElementById('doc-modal-source-link')?.href || window.location.href;
